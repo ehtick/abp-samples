@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using EventOrganizer.MongoDB;
 using EventOrganizer.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.Authentication.JwtBearer;
@@ -197,7 +197,7 @@ namespace EventOrganizer
             }
 
             app.UseCorrelationId();
-            app.UseStaticFiles();
+            app.MapAbpStaticAssets();
             app.UseRouting();
             app.UseCors(DefaultCorsPolicyName);
             app.UseAuthentication();
