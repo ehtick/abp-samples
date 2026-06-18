@@ -30,12 +30,11 @@
                   ShowPager="true"
                   PageSize="PageSize">
             <DataGridColumns>
-                <DataGridColumn Width="150px"
-                                TItem="AuthorDto"
+                <DataGridColumn TItem="AuthorDto"
                                 Field="@nameof(AuthorDto.Id)"
                                 Sortable="false"
-                                Caption="@L["Actions"]">
-                    <DisplayTemplate>
+                                Caption='@(L["Actions"])'>
+                    <DisplayTemplate Context="authorContext">
                         <Dropdown>
                             <DropdownToggle Color="Color.Primary">
                                 @L["Actions"]
@@ -43,13 +42,13 @@
                             <DropdownMenu>
                                 @if (CanEditAuthor)
                                 {
-                                    <DropdownItem Clicked="() => OpenEditAuthorModal(context)">
+                                    <DropdownItem Clicked="() => OpenEditAuthorModal(authorContext.Item)">
                                         @L["Edit"]
                                     </DropdownItem>
                                 }
                                 @if (CanDeleteAuthor)
                                 {
-                                    <DropdownItem Clicked="() => DeleteAuthorAsync(context)">
+                                    <DropdownItem Clicked="() => DeleteAuthorAsync(authorContext.Item)">
                                         @L["Delete"]
                                     </DropdownItem>
                                 }
@@ -59,12 +58,12 @@
                 </DataGridColumn>
                 <DataGridColumn TItem="AuthorDto"
                                 Field="@nameof(AuthorDto.Name)"
-                                Caption="@L["Name"]"></DataGridColumn>
+                                Caption='@(L["Name"])'></DataGridColumn>
                 <DataGridColumn TItem="AuthorDto"
                                 Field="@nameof(AuthorDto.BirthDate)"
-                                Caption="@L["BirthDate"]">
-                    <DisplayTemplate>
-                        @context.BirthDate.ToShortDateString()
+                                Caption='@(L["BirthDate"])'>
+                    <DisplayTemplate Context="authorContext">
+                        @authorContext.Item.BirthDate.ToShortDateString()
                     </DisplayTemplate>
                 </DataGridColumn>
             </DataGridColumns>
@@ -85,25 +84,25 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewAuthor.Name">
+                            <TextInput @bind-Value="@NewAuthor.Name">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
-                            </TextEdit>
+                            </TextInput>
                         </Field>
                     </Validation>
                     <Field>
                         <FieldLabel>@L["BirthDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="@NewAuthor.BirthDate"/>
+                        <DateInput TValue="DateTime" @bind-Value="@NewAuthor.BirthDate"/>
                     </Field>
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["ShortBio"]</FieldLabel>
-                            <MemoEdit Rows="5" @bind-Text="@NewAuthor.ShortBio">
+                            <MemoInput Rows="5" @bind-Value="@NewAuthor.ShortBio">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
-                            </MemoEdit>
+                            </MemoInput>
                         </Field>
                     </Validation>
                 </Validations>
@@ -137,25 +136,25 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingAuthor.Name">
+                            <TextInput @bind-Value="@EditingAuthor.Name">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
-                            </TextEdit>
+                            </TextInput>
                         </Field>
                     </Validation>
                     <Field>
                         <FieldLabel>@L["BirthDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="@EditingAuthor.BirthDate"/>
+                        <DateInput TValue="DateTime" @bind-Value="@EditingAuthor.BirthDate"/>
                     </Field>
                     <Validation>
                         <Field>
                             <FieldLabel>@L["ShortBio"]</FieldLabel>
-                            <MemoEdit Rows="5" @bind-Text="@EditingAuthor.ShortBio">
+                            <MemoInput Rows="5" @bind-Value="@EditingAuthor.ShortBio">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
-                            </MemoEdit>
+                            </MemoInput>
                         </Field>
                     </Validation>
                 </Validations>

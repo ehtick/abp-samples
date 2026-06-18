@@ -1,4 +1,4 @@
-﻿@page "/books"
+@page "/books"
 @attribute [Authorize(BookStorePermissions.Books.Default)]
 @using Acme.BookStore.Permissions
 @using Microsoft.AspNetCore.Authorization
@@ -43,44 +43,44 @@
                             <EntityAction TItem="BookDto"
                                           Text="@L["Edit"]"
                                           Visible=HasUpdatePermission
-                                          Clicked="() => OpenEditModalAsync(context)" />
+                                          Clicked="() => OpenEditModalAsync(context.Item)" />
                             <EntityAction TItem="BookDto"
                                           Text="@L["Delete"]"
                                           Visible=HasDeletePermission
-                                          Clicked="() => DeleteEntityAsync(context)"
-                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context)" />
+                                          Clicked="() => DeleteEntityAsync(context.Item)"
+                                          ConfirmationMessage="()=>GetDeleteConfirmationMessage(context.Item)" />
                         </EntityActions>
                     </DisplayTemplate>
                 </DataGridEntityActionsColumn>
                 <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.Name)"
-                                Caption="@L["Name"]"></DataGridColumn>
+                                Caption='@(L["Name"])'></DataGridColumn>
                 <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.AuthorName)"
-                                Caption="@L["Author"]"></DataGridColumn>
+                                Caption='@(L["Author"])'></DataGridColumn>
                 <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.Type)"
-                                Caption="@L["Type"]">
+                                Caption='@(L["Type"])'>
                     <DisplayTemplate>
-                        @L[$"Enum:BookType.{context.Type:D}"]
+                        @L[$"Enum:BookType.{context.Item.Type:D}"]
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.PublishDate)"
-                                Caption="@L["PublishDate"]">
+                                Caption='@(L["PublishDate"])'>
                     <DisplayTemplate>
-                        @context.PublishDate.ToShortDateString()
+                        @context.Item.PublishDate.ToShortDateString()
                     </DisplayTemplate>
                 </DataGridColumn>
                 <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.Price)"
-                                Caption="@L["Price"]">
+                                Caption='@(L["Price"])'>
                 </DataGridColumn>
                 <DataGridColumn TItem="BookDto"
                                 Field="@nameof(BookDto.CreationTime)"
-                                Caption="@L["CreationTime"]">
+                                Caption='@(L["CreationTime"])'>
                     <DisplayTemplate>
-                        @context.CreationTime.ToLongDateString()
+                        @context.Item.CreationTime.ToLongDateString()
                     </DisplayTemplate>
                 </DataGridColumn>
             </DataGridColumns>
@@ -101,7 +101,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Author"]</FieldLabel>
-                            <Select TValue="Guid" @bind-SelectedValue="@NewEntity.AuthorId">
+                            <Select TValue="Guid" @bind-Value="@NewEntity.AuthorId">
                                 @foreach (var author in authorList)
                                 {
                                     <SelectItem TValue="Guid" Value="@author.Id">
@@ -112,16 +112,16 @@
                         </Field>
                         <Field>
                             <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@NewEntity.Name">
+                            <TextInput @bind-Value="@NewEntity.Name">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
-                            </TextEdit>
+                            </TextInput>
                         </Field>
                     </Validation>
                     <Field>
                         <FieldLabel>@L["Type"]</FieldLabel>
-                        <Select TValue="BookType" @bind-SelectedValue="@NewEntity.Type">
+                        <Select TValue="BookType" @bind-Value="@NewEntity.Type">
                             @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
                             {
                                 <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
@@ -132,11 +132,11 @@
                     </Field>
                     <Field>
                         <FieldLabel>@L["PublishDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="NewEntity.PublishDate"/>
+                        <DateInput TValue="DateTime" @bind-Value="NewEntity.PublishDate"/>
                     </Field>
                     <Field>
                         <FieldLabel>@L["Price"]</FieldLabel>
-                        <NumericEdit TValue="float" @bind-Value="NewEntity.Price"/>
+                        <NumericInput TValue="float" @bind-Value="NewEntity.Price"/>
                     </Field>
                 </Validations>
             </ModalBody>
@@ -165,7 +165,7 @@
                     <Validation MessageLocalizer="@LH.Localize">
                         <Field>
                             <FieldLabel>@L["Author"]</FieldLabel>
-                            <Select TValue="Guid" @bind-SelectedValue="@EditingEntity.AuthorId">
+                            <Select TValue="Guid" @bind-Value="@EditingEntity.AuthorId">
                                 @foreach (var author in authorList)
                                 {
                                     <SelectItem TValue="Guid" Value="@author.Id">
@@ -176,16 +176,16 @@
                         </Field>
                         <Field>
                             <FieldLabel>@L["Name"]</FieldLabel>
-                            <TextEdit @bind-Text="@EditingEntity.Name">
+                            <TextInput @bind-Value="@EditingEntity.Name">
                                 <Feedback>
                                     <ValidationError/>
                                 </Feedback>
-                            </TextEdit>
+                            </TextInput>
                         </Field>
                     </Validation>
                     <Field>
                         <FieldLabel>@L["Type"]</FieldLabel>
-                        <Select TValue="BookType" @bind-SelectedValue="@EditingEntity.Type">
+                        <Select TValue="BookType" @bind-Value="@EditingEntity.Type">
                             @foreach (int bookTypeValue in Enum.GetValues(typeof(BookType)))
                             {
                                 <SelectItem TValue="BookType" Value="@((BookType) bookTypeValue)">
@@ -196,11 +196,11 @@
                     </Field>
                     <Field>
                         <FieldLabel>@L["PublishDate"]</FieldLabel>
-                        <DateEdit TValue="DateTime" @bind-Date="EditingEntity.PublishDate"/>
+                        <DateInput TValue="DateTime" @bind-Value="EditingEntity.PublishDate"/>
                     </Field>
                     <Field>
                         <FieldLabel>@L["Price"]</FieldLabel>
-                        <NumericEdit TValue="float" @bind-Value="EditingEntity.Price"/>
+                        <NumericInput TValue="float" @bind-Value="EditingEntity.Price"/>
                     </Field>
                 </Validations>
             </ModalBody>

@@ -3,9 +3,11 @@
   "creationTime": "10/13/2025 08:07:54 +00:00",
   "template": "app",
   "versions": {
-    "AbpFramework": "9.3.5",
-    "AbpStudio": "1.3.3",
-    "TargetDotnetFramework": "net9.0"
+    "AbpFramework": "10.4.1",
+    "AbpStudio": "1.4.1",
+    "TargetDotnetFramework": "net9.0",
+    "AbpCommercial": "10.4.1",
+    "LeptonX": "5.4.1"
   },
   "modules": {
     "Acme.BookStore": {
@@ -19,9 +21,7 @@
   },
   "options": {
     "httpRequests": {
-      "ignoredUrls": [
-      
-      ]
+      "ignoredUrls": []
     }
   },
   "creatingStudioConfiguration": {
@@ -45,12 +45,32 @@
     "theme": "leptonx-lite",
     "themeStyle": "",
     "themeMenuPlacement": "",
-    "mobileFramework": "none",
     "progressiveWebApp": "false",
     "runProgressiveWebAppSupport": "false",
     "publicWebsite": "false",
     "socialLogin": "false",
-    "selectedLanguages": ["English", "Arabic", "Chinese (Simplified)", "Chinese (Traditional)", "Czech", "English (United Kingdom)", "Finnish", "French", "German (Germany)", "Hindi ", "Hungarian", "Icelandic", "Italian", "Portuguese (Brazil)", "Romanian (Romania)", "Russian", "Slovak", "Spanish", "Swedish", "Turkish", ],
+    "selectedLanguages": [
+      "English",
+      "Arabic",
+      "Chinese (Simplified)",
+      "Chinese (Traditional)",
+      "Czech",
+      "English (United Kingdom)",
+      "Finnish",
+      "French",
+      "German (Germany)",
+      "Hindi ",
+      "Hungarian",
+      "Icelandic",
+      "Italian",
+      "Portuguese (Brazil)",
+      "Romanian (Romania)",
+      "Russian",
+      "Slovak",
+      "Spanish",
+      "Swedish",
+      "Turkish"
+    ],
     "defaultLanguage": "English",
     "createCommand": "abp new Acme.BookStore -t app --ui-framework blazor --database-provider ef --database-management-system postgresql --theme leptonx-lite --without-cms-kit --dont-run-bundling --use-open-source-template"
   }

@@ -16,7 +16,7 @@ using OpenIddict.Server.AspNetCore;
 using Acme.BookStore.EntityFrameworkCore;
 using Acme.BookStore.MultiTenancy;
 using Acme.BookStore.HealthChecks;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Volo.Abp;
 using Volo.Abp.Studio;
 using Volo.Abp.Account;

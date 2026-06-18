@@ -6,8 +6,10 @@ This is a layered startup solution based on [Domain Driven Design (DDD)](https:/
 
 ### Pre-requirements
 
-* [.NET9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v18 or 20](https://nodejs.org/en)
+* [.NET 10.0 SDK](https://dotnet.microsoft.com/download/dotnet)
+* [ABP CLI 10.4.x](https://abp.io/docs/latest/cli)
+* [Node.js 22 or later](https://nodejs.org/en)
+* PostgreSQL
 
 ### Configurations
 
