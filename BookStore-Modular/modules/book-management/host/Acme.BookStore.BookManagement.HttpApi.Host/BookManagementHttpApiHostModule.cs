@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Acme.BookStore.BookManagement.EntityFrameworkCore;
 using Acme.BookStore.BookManagement.MultiTenancy;
 using StackExchange.Redis;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;
 using Volo.Abp;
 using Volo.Abp.AspNetCore.MultiTenancy;
@@ -124,7 +124,7 @@ namespace Acme.BookStore.BookManagement
             }
             app.UseHttpsRedirection();
             app.UseCorrelationId();
-            app.UseStaticFiles();
+            app.MapAbpStaticAssets();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

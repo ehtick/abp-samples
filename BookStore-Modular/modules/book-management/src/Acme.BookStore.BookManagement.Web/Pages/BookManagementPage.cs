@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.Localization;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.AspNetCore.Mvc.Razor.Internal;
 using Acme.BookStore.BookManagement.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.RazorPages;

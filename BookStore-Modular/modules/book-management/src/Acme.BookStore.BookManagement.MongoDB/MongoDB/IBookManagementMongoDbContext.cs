@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.Authors;
+using Acme.BookStore.BookManagement.Authors;
 using Acme.BookStore.BookManagement.Books;
 using MongoDB.Driver;
 using Volo.Abp.Data;

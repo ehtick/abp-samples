@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using Volo.Abp.MongoDB;
 
 namespace Acme.BookStore.BookManagement.MongoDB

@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.Samples;
+using Acme.BookStore.BookManagement.Samples;
 
 namespace Acme.BookStore.BookManagement.EntityFrameworkCore.Samples
 {

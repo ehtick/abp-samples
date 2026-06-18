@@ -2,7 +2,7 @@ using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;
 using System.IO;
 using Microsoft.AspNetCore.Authentication;
@@ -23,7 +23,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.Autofac;
-using Volo.Abp.AutoMapper;
 using Volo.Abp.Caching;
 using Volo.Abp.Http.Client.IdentityModel;
 using Volo.Abp.Http.Client.IdentityModel.Web;
@@ -79,7 +78,6 @@ namespace Acme.BookStore.BookManagement
             ConfigureCache(configuration);
             ConfigureUrls(configuration);
             ConfigureAuthentication(context, configuration);
-            ConfigureAutoMapper();
             ConfigureVirtualFileSystem(hostingEnvironment);
             ConfigureSwaggerServices(context.Services);
             ConfigureMultiTenancy();
@@ -143,14 +141,6 @@ namespace Acme.BookStore.BookManagement
                 });
         }
 
-        private void ConfigureAutoMapper()
-        {
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<BookManagementWebHostModule>();
-            });
-        }
-
         private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
         {
             if (hostingEnvironment.IsDevelopment())
@@ -211,7 +201,7 @@ namespace Acme.BookStore.BookManagement
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
+            app.MapAbpStaticAssets();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

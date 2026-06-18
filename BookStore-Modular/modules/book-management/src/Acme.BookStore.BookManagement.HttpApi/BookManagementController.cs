@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.Localization;
+using Acme.BookStore.BookManagement.Localization;
 using Volo.Abp.AspNetCore.Mvc;
 
 namespace Acme.BookStore.BookManagement.Controllers

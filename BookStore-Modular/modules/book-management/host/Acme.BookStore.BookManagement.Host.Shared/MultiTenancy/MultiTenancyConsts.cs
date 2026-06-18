@@ -1,4 +1,4 @@
-﻿namespace Acme.BookStore.BookManagement.MultiTenancy
+namespace Acme.BookStore.BookManagement.MultiTenancy
 {
     public static class MultiTenancyConsts
     {

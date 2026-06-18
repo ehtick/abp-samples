@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using Acme.BookStore.BookManagement;
 using Acme.BookStore.BookManagement.Web;
 using Localization.Resources.AbpUi;
@@ -11,7 +11,7 @@ using Acme.BookStore.EntityFrameworkCore;
 using Acme.BookStore.Localization;
 using Acme.BookStore.MultiTenancy;
 using Acme.BookStore.Web.Menus;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Swashbuckle.AspNetCore.Swagger;
 using Volo.Abp;
 using Volo.Abp.Account.Web;
@@ -24,7 +24,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Basic;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.Autofac;
-using Volo.Abp.AutoMapper;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity.Web;
 using Volo.Abp.Localization;
@@ -74,7 +73,6 @@ namespace Acme.BookStore.Web
 
             ConfigureUrls(configuration);
             ConfigureAuthentication(context, configuration);
-            ConfigureAutoMapper();
             ConfigureVirtualFileSystem(hostingEnvironment);
             ConfigureLocalizationServices();
             ConfigureNavigationServices();
@@ -99,15 +97,6 @@ namespace Acme.BookStore.Web
                     options.RequireHttpsMetadata = false;
                     options.ApiName = "BookStore";
                 });
-        }
-
-        private void ConfigureAutoMapper()
-        {
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<BookStoreWebModule>();
-
-            });
         }
 
         private void ConfigureVirtualFileSystem(IWebHostEnvironment hostingEnvironment)
@@ -192,7 +181,7 @@ namespace Acme.BookStore.Web
                 app.UseErrorPage();
             }
 
-            app.UseStaticFiles();
+            app.MapAbpStaticAssets();
             app.UseRouting();
             app.UseAuthentication();
             app.UseJwtTokenMiddleware();

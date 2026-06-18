@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.EntityFrameworkCore;
+using Acme.BookStore.BookManagement.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;

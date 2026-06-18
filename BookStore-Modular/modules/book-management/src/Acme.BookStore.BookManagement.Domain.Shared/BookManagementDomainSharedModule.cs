@@ -1,4 +1,4 @@
-﻿using Volo.Abp.Modularity;
+using Volo.Abp.Modularity;
 using Volo.Abp.Localization;
 using Acme.BookStore.BookManagement.Localization;
 using Volo.Abp.Localization.ExceptionHandling;

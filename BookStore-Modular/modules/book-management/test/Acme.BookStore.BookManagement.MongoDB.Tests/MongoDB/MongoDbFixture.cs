@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Mongo2Go;
 
 namespace Acme.BookStore.BookManagement.MongoDB

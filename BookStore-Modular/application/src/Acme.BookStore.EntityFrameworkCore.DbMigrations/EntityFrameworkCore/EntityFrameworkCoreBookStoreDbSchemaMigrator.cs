@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Acme.BookStore.Data;
 using Volo.Abp.DependencyInjection;

@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 using Volo.Abp.EntityFrameworkCore.Modeling;
 
 namespace Acme.BookStore.BookManagement.EntityFrameworkCore
