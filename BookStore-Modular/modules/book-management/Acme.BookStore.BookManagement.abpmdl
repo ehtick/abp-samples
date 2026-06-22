@@ -1,0 +1,32 @@
+{
+  "template": "module",
+  "imports": {
+    "Volo.Abp.BasicTheme": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.IdentityServer": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.4.1",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "host": {},
+      "src": {},
+      "test": {}
+    }
+  }
+}

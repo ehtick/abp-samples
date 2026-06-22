@@ -1,0 +1,35 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.BasicTheme": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Account": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.IdentityServer": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "10.4.1",
+      "isInstalled": true
+    },
+    "Acme.BookStore.BookManagement": {
+      "path": "../modules/book-management/Acme.BookStore.BookManagement.abpmdl",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  }
+}
