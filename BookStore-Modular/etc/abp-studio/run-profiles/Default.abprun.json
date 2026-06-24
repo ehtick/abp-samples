@@ -1,0 +1,54 @@
+{
+  "applications": {
+    "Acme.BookStore.Web": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44367",
+      "path": "../../../application/src/Acme.BookStore.Web/Acme.BookStore.Web.csproj",
+      "healthCheckEndpoint": "/",
+      "execution": {
+        "order": 6
+      }
+    },
+    "Acme.BookStore.BookManagement.IdentityServer": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44380",
+      "path": "../../../modules/book-management/host/Acme.BookStore.BookManagement.IdentityServer/Acme.BookStore.BookManagement.IdentityServer.csproj",
+      "healthCheckEndpoint": "/",
+      "execution": {
+        "order": 2
+      }
+    },
+    "Acme.BookStore.BookManagement.HttpApi.Host": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44364",
+      "path": "../../../modules/book-management/host/Acme.BookStore.BookManagement.HttpApi.Host/Acme.BookStore.BookManagement.HttpApi.Host.csproj",
+      "healthCheckEndpoint": "/",
+      "execution": {
+        "order": 4
+      }
+    },
+    "Acme.BookStore.BookManagement.Web.Host": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44387",
+      "path": "../../../modules/book-management/host/Acme.BookStore.BookManagement.Web.Host/Acme.BookStore.BookManagement.Web.Host.csproj",
+      "healthCheckEndpoint": "/",
+      "execution": {
+        "order": 5
+      }
+    }
+  },
+  "tasks": {
+    "Initialize Solution": {
+      "behaviour": 2,
+      "startCommand": "./initialize-solution.ps1",
+      "workingDirectory": "../../scripts",
+      "shortDescription": "Installs client libraries and applies migrations for the application and book-management module."
+    },
+    "Migrate Database": {
+      "behaviour": 0,
+      "startCommand": "./migrate-database.ps1",
+      "workingDirectory": "../../scripts",
+      "shortDescription": "Applies database migrations for the application and book-management module."
+    }
+  }
+}

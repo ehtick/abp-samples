@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement;
+using Acme.BookStore.BookManagement;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.Identity;

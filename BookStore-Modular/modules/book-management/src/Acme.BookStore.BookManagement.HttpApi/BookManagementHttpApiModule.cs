@@ -1,4 +1,4 @@
-﻿using Localization.Resources.AbpUi;
+using Localization.Resources.AbpUi;
 using Acme.BookStore.BookManagement.Localization;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.Localization;

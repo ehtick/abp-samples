@@ -1,59 +1,56 @@
-﻿# Acme.BookStore
+﻿# BookStore Blazor + EF Core
 
-## About this solution
+This sample implements the ABP Book Store tutorial with a Blazor WebAssembly UI and Entity Framework Core. It is a layered ABP application with a separate API host, Blazor client, and database migrator.
 
-This is a layered startup solution based on [Domain Driven Design (DDD)](https://abp.io/docs/latest/framework/architecture/domain-driven-design) practises. All the fundamental ABP modules are already installed. Check the [Application Startup Template](https://abp.io/docs/latest/solution-templates/layered-web-application) documentation for more info.
+Tutorial: https://abp.io/docs/latest/tutorials/book-store?UI=Blazor&DB=EF
 
-### Pre-requirements
+## Prerequisites
 
-* [.NET9.0+ SDK](https://dotnet.microsoft.com/download/dotnet)
-* [Node v18 or 20](https://nodejs.org/en)
+- .NET 10.0 SDK
+- ABP CLI 10.4.x
+- Node.js 22 or later
+- PostgreSQL
 
-### Configurations
+## Initial Tasks
 
-The solution comes with a default configuration that works out of the box. However, you may consider to change the following configuration before running your solution:
+This project includes ABP Studio metadata and initial tasks under `etc/`.
 
-* Check the `ConnectionStrings` in `appsettings.json` files under the `Acme.BookStore.HttpApi.Host` and `Acme.BookStore.DbMigrator` projects and change it if you need.
+- `Initialize Solution` runs `abp install-libs`, runs `Acme.BookStore.DbMigrator`, and creates the local OpenIddict development certificate.
+- `Migrate Database` runs `Acme.BookStore.DbMigrator` to apply migrations and seed data.
 
-### Before running the application
+In ABP Studio, open `Acme.BookStore.abpsln`, select the `Default` run profile, and run `Initialize Solution` before the first launch.
 
-* Run `abp install-libs` command on your solution folder to install client-side package dependencies. This step is automatically done when you create a new solution, if you didn't especially disabled it. However, you should run it yourself if you have first cloned this solution from your source control, or added a new client-side package dependency to your solution.
-* Run `Acme.BookStore.DbMigrator` to create the initial database. This step is also automatically done when you create a new solution, if you didn't especially disabled it. This should be done in the first run. It is also needed if a new database migration is added to the solution later.
+## Run the Application
 
-#### Generating a Signing Certificate
+After the initial task completes, start these applications from ABP Studio:
 
-In the production environment, you need to use a production signing certificate. ABP Framework sets up signing and encryption certificates in your application and expects an `openiddict.pfx` file in your application.
+- `Acme.BookStore.HttpApi.Host` at `https://localhost:44323`
+- `Acme.BookStore.Blazor` at `https://localhost:44308`
 
-To generate a signing certificate, you can use the following command:
+Manual run commands:
 
-```bash
+```powershell
+cd src/Acme.BookStore.HttpApi.Host
+dotnet run
+```
+
+In a second terminal:
+
+```powershell
+cd src/Acme.BookStore.Blazor
+dotnet run
+```
+
+## Manual Setup
+
+If you are not using ABP Studio, run these commands from the project root:
+
+```powershell
+abp install-libs
+cd src/Acme.BookStore.DbMigrator
+dotnet run
+cd ../Acme.BookStore.HttpApi.Host
 dotnet dev-certs https -v -ep openiddict.pfx -p 0bc9a38b-d740-4abc-81e8-2c78dc44e970
 ```
 
-> `0bc9a38b-d740-4abc-81e8-2c78dc44e970` is the password of the certificate, you can change it to any password you want.
-
-It is recommended to use **two** RSA certificates, distinct from the certificate(s) used for HTTPS: one for encryption, one for signing.
-
-For more information, please refer to: [OpenIddict Certificate Configuration](https://documentation.openiddict.com/configuration/encryption-and-signing-credentials.html#registering-a-certificate-recommended-for-production-ready-scenarios)
-
-> Also, see the [Configuring OpenIddict](https://abp.io/docs/latest/Deployment/Configuring-OpenIddict#production-environment) documentation for more information.
-
-### Solution structure
-
-This is a layered monolith application that consists of the following applications:
-
-* `Acme.BookStore.DbMigrator`: A console application which applies the migrations and also seeds the initial data. It is useful on development as well as on production environment.
-* `Acme.BookStore.HttpApi.Host`: ASP.NET Core API application that is used to expose the APIs to the clients.
-* `Acme.BookStore.Blazor`: ASP.NET Core Blazor WASM application that is a single page application that runs on the browser.
-
-
-## Deploying the application
-
-Deploying an ABP application follows the same process as deploying any .NET or ASP.NET Core application. However, there are important considerations to keep in mind. For detailed guidance, refer to ABP's [deployment documentation](https://abp.io/docs/latest/Deployment/Index).
-
-### Additional resources
-
-You can see the following resources to learn more about your solution and the ABP Framework:
-
-* [Web Application Development Tutorial](https://abp.io/docs/latest/tutorials/book-store/part-1)
-* [Application Startup Template](https://abp.io/docs/latest/startup-templates/application/index)
+For production OpenIddict certificate guidance, see https://abp.io/docs/latest/deployment/configuring-openiddict.

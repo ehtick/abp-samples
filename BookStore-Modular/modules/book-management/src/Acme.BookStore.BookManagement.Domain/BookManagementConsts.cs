@@ -1,4 +1,4 @@
-﻿namespace Acme.BookStore.BookManagement
+namespace Acme.BookStore.BookManagement
 {
     public static class BookManagementConsts
     {

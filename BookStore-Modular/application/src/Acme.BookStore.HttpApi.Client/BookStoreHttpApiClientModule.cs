@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement;
+using Acme.BookStore.BookManagement;
 using Microsoft.Extensions.DependencyInjection;
 using Volo.Abp.Account;
 using Volo.Abp.FeatureManagement;

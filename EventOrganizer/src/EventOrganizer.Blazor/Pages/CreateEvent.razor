@@ -7,18 +7,18 @@
             <EditForm Model="@Event" OnValidSubmit="Create">
                 <Field>
                     <FieldLabel>@L["Title"]</FieldLabel>
-                    <TextEdit @bind-Text="@Event.Title" />
+                    <TextInput @bind-Value="@Event.Title" />
                 </Field>
                 <Field>
                     <FieldLabel>@L["Description"]</FieldLabel>
-                    <MemoEdit @bind-Text="@Event.Description" />
+                    <MemoInput @bind-Value="@Event.Description" />
                 </Field>
                 <Field>
                     <Check TValue="bool" @bind-Checked="@Event.IsFree">@L["Free"]</Check>
                 </Field>
                 <Field>
                     <FieldLabel>@L["StartTime"]</FieldLabel>
-                    <DateEdit TValue="DateTime" @bind-Date="@Event.StartTime" />
+                    <DateInput TValue="DateTime" @bind-Value="@Event.StartTime" />
                 </Field>
                 <Button Type="@ButtonType.Submit" Block="true" Color="@Color.Primary" Size="Size.Large">@L["Save"]</Button>
             </EditForm>

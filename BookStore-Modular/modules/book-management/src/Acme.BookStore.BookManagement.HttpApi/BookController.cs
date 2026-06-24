@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Acme.BookStore.BookManagement.Books;
 using Acme.BookStore.BookManagement.Controllers;

@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.EntityFrameworkCore;
+using Acme.BookStore.BookManagement.EntityFrameworkCore;
 using Volo.Abp.Modularity;
 
 namespace Acme.BookStore.BookManagement

@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.DependencyInjection;
 using Acme.BookStore.BookManagement.Localization;
 using Acme.BookStore.BookManagement.Permissions;
 using Acme.BookStore.BookManagement.Web.Menus;
 using Volo.Abp.AspNetCore.Mvc.Localization;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
-using Volo.Abp.AutoMapper;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
 using Volo.Abp.VirtualFileSystem;
@@ -14,8 +13,7 @@ namespace Acme.BookStore.BookManagement.Web
 {
     [DependsOn(
         typeof(BookManagementHttpApiModule),
-        typeof(AbpAspNetCoreMvcUiThemeSharedModule),
-        typeof(AbpAutoMapperModule)
+        typeof(AbpAspNetCoreMvcUiThemeSharedModule)
         )]
     public class BookManagementWebModule : AbpModule
     {
@@ -37,11 +35,6 @@ namespace Acme.BookStore.BookManagement.Web
             Configure<AbpVirtualFileSystemOptions>(options =>
             {
                 options.FileSets.AddEmbedded<BookManagementWebModule>("Acme.BookStore.BookManagement.Web");
-            });
-
-            Configure<AbpAutoMapperOptions>(options =>
-            {
-                options.AddMaps<BookManagementWebModule>(validate: true);
             });
 
             Configure<RazorPagesOptions>(options =>

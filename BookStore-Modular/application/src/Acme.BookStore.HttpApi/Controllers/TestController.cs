@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Acme.BookStore.Models.Test;
 using System;
 using System.Collections.Generic;

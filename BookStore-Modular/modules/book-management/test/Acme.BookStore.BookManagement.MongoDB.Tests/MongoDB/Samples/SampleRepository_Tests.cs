@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.Samples;
+using Acme.BookStore.BookManagement.Samples;
 using Xunit;
 
 namespace Acme.BookStore.BookManagement.MongoDB.Samples

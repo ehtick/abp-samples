@@ -3,7 +3,6 @@ using System.Net.Http;
 using Blazorise;
 using Blazorise.Bootstrap5;
 using Blazorise.Icons.FontAwesome;
-using IdentityModel;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +13,6 @@ using Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme;
 using Volo.Abp.Autofac.WebAssembly;
 using Volo.Abp.Modularity;
 using Volo.Abp.UI.Navigation;
-using Volo.Abp.AutoMapper;
 using Volo.Abp.Identity.Blazor.WebAssembly;
 using Volo.Abp.SettingManagement.Blazor.WebAssembly;
 using Volo.Abp.TenantManagement.Blazor.WebAssembly;
@@ -42,7 +40,6 @@ namespace EventOrganizer.Blazor
             ConfigureRouter(context);
             ConfigureUI(builder);
             ConfigureMenu(context);
-            ConfigureAutoMapper(context);
         }
 
         private void ConfigureRouter(ServiceConfigurationContext context)
@@ -75,7 +72,7 @@ namespace EventOrganizer.Blazor
             builder.Services.AddOidcAuthentication(options =>
             {
                 builder.Configuration.Bind("AuthServer", options.ProviderOptions);
-                options.UserOptions.RoleClaim = JwtClaimTypes.Role;
+                options.UserOptions.RoleClaim = "role";
                 options.ProviderOptions.DefaultScopes.Add("EventOrganizer");
                 options.ProviderOptions.DefaultScopes.Add("role");
                 options.ProviderOptions.DefaultScopes.Add("email");
@@ -95,11 +92,6 @@ namespace EventOrganizer.Blazor
             {
                 BaseAddress = new Uri(environment.BaseAddress)
             });
-        }
-
-        private void ConfigureAutoMapper(ServiceConfigurationContext context)
-        {
-            Configure<AbpAutoMapperOptions>(options => { options.AddMaps<EventOrganizerBlazorModule>(); });
         }
 
         public override void OnApplicationInitialization(ApplicationInitializationContext context)

@@ -1,4 +1,4 @@
-﻿namespace Acme.BookStore.BookManagement.Samples
+namespace Acme.BookStore.BookManagement.Samples
 {
     public class SampleDto
     {

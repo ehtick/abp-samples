@@ -1,0 +1,36 @@
+{
+  "id": "2454592b-d3c5-4813-8b3f-752c651d63a6",
+  "template": "modular",
+  "versions": {
+    "AbpFramework": "10.4.1",
+    "AbpStudio": "2.2.1",
+    "TargetDotnetFramework": "net10.0"
+  },
+  "modules": {
+    "Acme.BookStore": {
+      "path": "application/Acme.BookStore.abpmdl",
+      "isMainApplication": true,
+      "folder": "application"
+    },
+    "Acme.BookStore.BookManagement": {
+      "path": "modules/book-management/Acme.BookStore.BookManagement.abpmdl",
+      "folder": "modules"
+    }
+  },
+  "runProfiles": {
+    "Default": {
+      "path": "etc/abp-studio/run-profiles/Default.abprun.json"
+    }
+  },
+  "options": {
+    "httpRequests": {
+      "ignoredUrls": []
+    }
+  },
+  "folders": {
+    "items": {
+      "application": {},
+      "modules": {}
+    }
+  }
+}

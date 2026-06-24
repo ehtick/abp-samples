@@ -1,4 +1,4 @@
-﻿using Acme.BookStore.BookManagement.Localization;
+using Acme.BookStore.BookManagement.Localization;
 using Acme.BookStore.BookManagement.Permissions;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;

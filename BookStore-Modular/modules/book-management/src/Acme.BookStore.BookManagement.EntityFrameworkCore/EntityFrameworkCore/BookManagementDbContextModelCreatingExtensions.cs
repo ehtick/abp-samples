@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Acme.BookStore.BookManagement.Authors;
 using Acme.BookStore.BookManagement.Books;
 using Microsoft.EntityFrameworkCore;

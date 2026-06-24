@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using Acme.BookStore.BookManagement.Localization;
 using Acme.BookStore.BookManagement.Permissions;
 using Microsoft.AspNetCore.Authorization;

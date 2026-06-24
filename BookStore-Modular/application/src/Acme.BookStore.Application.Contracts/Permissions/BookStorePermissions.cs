@@ -1,4 +1,4 @@
-﻿namespace Acme.BookStore.Permissions
+namespace Acme.BookStore.Permissions
 {
     public static class BookStorePermissions
     {
