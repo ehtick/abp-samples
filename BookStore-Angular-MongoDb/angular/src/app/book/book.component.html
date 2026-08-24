@@ -18,7 +18,7 @@
     </div>
   </div>
   <div class="card-body">
-    <ngx-datatable [rows]="book.items" [count]="book.totalCount" [list]="list" default>
+    <ngx-datatable [rows]="book().items" [count]="book().totalCount" [list]="list" default>
       <ngx-datatable-column [name]="'::Actions' | abpLocalization" [maxWidth]="150" [sortable]="false">
         <ng-template let-row="row" ngx-datatable-cell-template>
           <div ngbDropdown container="body" class="d-inline-block">
@@ -44,7 +44,7 @@
 
       <ngx-datatable-column [name]="'::Type' | abpLocalization" prop="type">
         <ng-template let-row="row" ngx-datatable-cell-template>
-          {{ '::Enum:BookType.' + row.type | abpLocalization }}1
+          {{ '::Enum:BookType.' + row.type | abpLocalization }}
         </ng-template>
       </ngx-datatable-column>
       <ngx-datatable-column [name]="'::PublishDate' | abpLocalization" prop="publishDate">
@@ -61,18 +61,19 @@
   </div>
 </div>
 
-<abp-modal [(visible)]="isModalOpen">
+<abp-modal [visible]="isModalOpen()" (visibleChange)="isModalOpen.set($event)">
   <ng-template #abpHeader>
-    <h3>{{ (selectedBook.id ? '::Edit' : '::NewBook' ) | abpLocalization }}</h3>
+    <h3>{{ (selectedBook().id ? '::Edit' : '::NewBook' ) | abpLocalization }}</h3>
   </ng-template>
 
   <ng-template #abpBody>
+    @if (form) {
     <form [formGroup]="form" (ngSubmit)="save()">
       <div class="form-group">
         <label for="author-id">Author</label><span> * </span>
         <select class="form-control" id="author-id" formControlName="authorId">
           <option [ngValue]="null">Select author</option>
-          @for (author of authors$ | async; track author) {
+          @for (author of authors(); track author.id) {
             <option [ngValue]="author.id">
               {{ author.name }}
             </option>
@@ -108,6 +109,7 @@
           ngbDatepicker (click)="datepicker.toggle()" />
         </div>
       </form>
+    }
     </ng-template>
 
     <ng-template #abpFooter>
@@ -116,7 +118,7 @@
       </button>
 
       <!--added save button-->
-      <button class="btn btn-primary" (click)="save()" [disabled]="form.invalid">
+      <button class="btn btn-primary" (click)="save()" [disabled]="!form || form.invalid">
         <i class="fa fa-check mr-1"></i>
         {{ '::Save' | abpLocalization }}
       </button>
