@@ -1,101 +1,75 @@
-﻿using System;
-using System.Net.Http;
-using Blazorise;
-using Blazorise.Bootstrap5;
-using Blazorise.Icons.FontAwesome;
-using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
+using EventOrganizer.Blazor.Components;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Volo.Abp;
-using Volo.Abp.AspNetCore.Components.Web.BasicTheme.Themes.Basic;
-using Volo.Abp.AspNetCore.Components.Web.Theming.Routing;
-using Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme;
-using Volo.Abp.Autofac.WebAssembly;
+using Volo.Abp.AspNetCore.Components.WebAssembly.BasicTheme.Bundling;
+using Volo.Abp.AspNetCore.Components.WebAssembly.Theming.Bundling;
+using Volo.Abp.AspNetCore.Components.WebAssembly.WebApp;
+using Volo.Abp.AspNetCore.Mvc.Libs;
+using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
+using Volo.Abp.Autofac;
 using Volo.Abp.Modularity;
-using Volo.Abp.UI.Navigation;
-using Volo.Abp.Identity.Blazor.WebAssembly;
-using Volo.Abp.SettingManagement.Blazor.WebAssembly;
-using Volo.Abp.TenantManagement.Blazor.WebAssembly;
 
-namespace EventOrganizer.Blazor
+namespace EventOrganizer.Blazor;
+
+[DependsOn(
+    typeof(AbpAutofacModule),
+    typeof(AbpAspNetCoreComponentsWebAssemblyBasicThemeBundlingModule),
+    typeof(AbpAspNetCoreMvcUiBundlingModule)
+)]
+public class EventOrganizerBlazorModule : AbpModule
 {
-    [DependsOn(
-        typeof(AbpAutofacWebAssemblyModule),
-        typeof(EventOrganizerHttpApiClientModule),
-        typeof(AbpAspNetCoreComponentsWebAssemblyBasicThemeModule),
-        typeof(AbpIdentityBlazorWebAssemblyModule),
-        typeof(AbpTenantManagementBlazorWebAssemblyModule),
-        typeof(AbpSettingManagementBlazorWebAssemblyModule)
-    )]
-    public class EventOrganizerBlazorModule : AbpModule
+    public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        public override void ConfigureServices(ServiceConfigurationContext context)
+        Configure<RouteOptions>(options =>
         {
-            var environment = context.Services.GetSingletonInstance<IWebAssemblyHostEnvironment>();
-            var builder = context.Services.GetSingletonInstance<WebAssemblyHostBuilder>();
+            options.SuppressCheckForUnhandledSecurityMetadata = true;
+        });
 
-            ConfigureAuthentication(builder);
-            ConfigureHttpClient(context, environment);
-            ConfigureBlazorise(context);
-            ConfigureRouter(context);
-            ConfigureUI(builder);
-            ConfigureMenu(context);
+        context.Services.AddRazorComponents()
+            .AddInteractiveWebAssemblyComponents();
+
+        Configure<AbpMvcLibsOptions>(options =>
+        {
+            options.CheckLibs = false;
+        });
+
+        Configure<AbpBundlingOptions>(options =>
+        {
+            var globalStyles = options.StyleBundles.Get(BlazorWebAssemblyStandardBundles.Styles.Global);
+            globalStyles.AddContributors(typeof(EventOrganizerStyleBundleContributor));
+
+            var globalScripts = options.ScriptBundles.Get(BlazorWebAssemblyStandardBundles.Scripts.Global);
+            globalScripts.AddContributors(typeof(EventOrganizerScriptBundleContributor));
+        });
+    }
+
+    public override void OnApplicationInitialization(ApplicationInitializationContext context)
+    {
+        var env = context.GetEnvironment();
+        var app = context.GetApplicationBuilder();
+
+        if (env.IsDevelopment())
+        {
+            app.UseWebAssemblyDebugging();
+        }
+        else
+        {
+            app.UseHsts();
         }
 
-        private void ConfigureRouter(ServiceConfigurationContext context)
-        {
-            Configure<AbpRouterOptions>(options =>
-            {
-                options.AppAssembly = typeof(EventOrganizerBlazorModule).Assembly;
-            });
-        }
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.MapAbpStaticAssets();
+        app.UseAntiforgery();
 
-        private void ConfigureMenu(ServiceConfigurationContext context)
+        app.UseConfiguredEndpoints(builder =>
         {
-            Configure<AbpNavigationOptions>(options =>
-            {
-                options.MenuContributors.Add(
-                    new EventOrganizerMenuContributor(context.Services.GetConfiguration()));
-            });
-        }
-
-        private void ConfigureBlazorise(ServiceConfigurationContext context)
-        {
-            context.Services
-                .AddBlazorise()
-                .AddBootstrap5Providers()
-                .AddFontAwesomeIcons();
-        }
-
-        private static void ConfigureAuthentication(WebAssemblyHostBuilder builder)
-        {
-            builder.Services.AddOidcAuthentication(options =>
-            {
-                builder.Configuration.Bind("AuthServer", options.ProviderOptions);
-                options.UserOptions.RoleClaim = "role";
-                options.ProviderOptions.DefaultScopes.Add("EventOrganizer");
-                options.ProviderOptions.DefaultScopes.Add("role");
-                options.ProviderOptions.DefaultScopes.Add("email");
-                options.ProviderOptions.DefaultScopes.Add("phone");
-            });
-        }
-
-        private static void ConfigureUI(WebAssemblyHostBuilder builder)
-        {
-            builder.RootComponents.Add<App>("#ApplicationContainer");
-        }
-
-        private static void ConfigureHttpClient(ServiceConfigurationContext context,
-            IWebAssemblyHostEnvironment environment)
-        {
-            context.Services.AddTransient(sp => new HttpClient
-            {
-                BaseAddress = new Uri(environment.BaseAddress)
-            });
-        }
-
-        public override void OnApplicationInitialization(ApplicationInitializationContext context)
-        {
-        }
+            builder.MapRazorComponents<App>()
+                .AddInteractiveWebAssemblyRenderMode()
+                .AddAdditionalAssemblies(WebAppAdditionalAssembliesHelper.GetAssemblies<EventOrganizerBlazorClientModule>());
+        });
     }
 }
