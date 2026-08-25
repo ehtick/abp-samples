@@ -7,7 +7,7 @@ Tutorial: https://abp.io/docs/latest/tutorials/book-store?UI=NG&DB=Mongo
 ## Prerequisites
 
 - .NET 10.0 SDK
-- ABP CLI 10.4.x
+- ABP CLI 3.0.10
 - Node.js 22 or later
 - MongoDB
 

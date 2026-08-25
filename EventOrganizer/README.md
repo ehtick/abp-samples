@@ -7,7 +7,7 @@ Article: https://abp.io/community/articles/creating-an-event-organizer-applicati
 ## Prerequisites
 
 - .NET 10.0 SDK
-- ABP CLI 10.4.x
+- ABP CLI 3.0.10
 - Node.js 22 or later
 - MongoDB
 
