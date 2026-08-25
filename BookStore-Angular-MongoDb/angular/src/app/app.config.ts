@@ -5,7 +5,6 @@ import { provideFeatureManagementConfig } from '@abp/ng.feature-management';
 import { provideAbpThemeShared } from '@abp/ng.theme.shared';
 import { provideLogo, withEnvironmentOptions } from '@volo/ngx-lepton-x.core';
 import { ApplicationConfig } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { environment } from '../environments/environment';
 import { APP_ROUTES } from './app.routes';
@@ -21,12 +20,11 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(APP_ROUTES),
     ...APP_ROUTE_PROVIDER,
-    provideAnimations(),
     provideAbpCore(
       withOptions({
         environment,
         registerLocaleFn: registerLocaleForEsBuild(),
-      })
+      }),
     ),
     provideAbpOAuth(),
     provideSettingManagementConfig(),

@@ -5,7 +5,7 @@ This is a startup project based on the ABP framework. For more information, visi
 ## Prerequisites
 
 - Node.js 22 or later
-- ABP CLI 10.4.x
+- ABP CLI 3.0.10
 
 ## Development server
 

@@ -1,6 +1,13 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
-import { ListService, PagedResultDto, LocalizationPipe, PermissionDirective } from '@abp/ng.core';
+import {
+  ListService,
+  PagedResultDto,
+  LocalizationPipe,
+  PermissionDirective,
+  PagedAndSortedResultRequestDto,
+} from '@abp/ng.core';
 import { AuthorService, AuthorDto } from '@proxy/authors';
 import {
   FormGroup,
@@ -34,48 +41,44 @@ import { PageModule } from '@abp/ng.components/page';
   templateUrl: './author.component.html',
   styleUrls: ['./author.component.scss'],
   providers: [ListService, { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AuthorComponent implements OnInit {
-  readonly list = inject(ListService);
+export class AuthorComponent {
+  readonly list = inject(ListService<PagedAndSortedResultRequestDto>);
   private authorService = inject(AuthorService);
   private fb = inject(FormBuilder);
   private confirmation = inject(ConfirmationService);
 
-  author = { items: [], totalCount: 0 } as PagedResultDto<AuthorDto>;
+  readonly author = toSignal(this.list.hookToQuery(query => this.authorService.getList(query)), {
+    initialValue: { items: [], totalCount: 0 } as PagedResultDto<AuthorDto>,
+  });
 
-  isModalOpen = false;
+  readonly isModalOpen = signal(false);
 
-  form: FormGroup;
+  form!: FormGroup;
 
-  selectedAuthor = {} as AuthorDto;
-
-  ngOnInit(): void {
-    const authorStreamCreator = query => this.authorService.getList(query);
-
-    this.list.hookToQuery(authorStreamCreator).subscribe((response) => {
-      this.author = response;
-    });
-  }
+  readonly selectedAuthor = signal({} as AuthorDto);
 
   createAuthor() {
-    this.selectedAuthor = {} as AuthorDto;
+    this.selectedAuthor.set({} as AuthorDto);
     this.buildForm();
-    this.isModalOpen = true;
+    this.isModalOpen.set(true);
   }
 
   editAuthor(id: string) {
-    this.authorService.get(id).subscribe((author) => {
-      this.selectedAuthor = author;
+    this.authorService.get(id).subscribe(author => {
+      this.selectedAuthor.set(author);
       this.buildForm();
-      this.isModalOpen = true;
+      this.isModalOpen.set(true);
     });
   }
 
   buildForm() {
+    const selectedAuthor = this.selectedAuthor();
     this.form = this.fb.group({
-      name: [this.selectedAuthor.name || '', Validators.required],
+      name: [selectedAuthor.name || '', Validators.required],
       birthDate: [
-        this.selectedAuthor.birthDate ? new Date(this.selectedAuthor.birthDate) : null,
+        selectedAuthor.birthDate ? new Date(selectedAuthor.birthDate) : null,
         Validators.required,
       ],
     });
@@ -86,17 +89,16 @@ export class AuthorComponent implements OnInit {
       return;
     }
 
-    if (this.selectedAuthor.id) {
-      this.authorService
-        .update(this.selectedAuthor.id, this.form.value)
-        .subscribe(() => {
-          this.isModalOpen = false;
-          this.form.reset();
-          this.list.get();
-        });
+    const selectedAuthor = this.selectedAuthor();
+    if (selectedAuthor.id) {
+      this.authorService.update(selectedAuthor.id, this.form.value).subscribe(() => {
+        this.isModalOpen.set(false);
+        this.form.reset();
+        this.list.get();
+      });
     } else {
       this.authorService.create(this.form.value).subscribe(() => {
-        this.isModalOpen = false;
+        this.isModalOpen.set(false);
         this.form.reset();
         this.list.get();
       });

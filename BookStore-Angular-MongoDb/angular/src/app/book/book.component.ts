@@ -1,5 +1,12 @@
-import { ListService, PagedResultDto, LocalizationPipe, PermissionDirective } from '@abp/ng.core';
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  ListService,
+  PagedResultDto,
+  LocalizationPipe,
+  PermissionDirective,
+  PagedAndSortedResultRequestDto,
+} from '@abp/ng.core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { CommonModule } from '@angular/common';
 import { BookService, BookDto, bookTypeOptions, AuthorLookupDto } from '@proxy/books';
 import {
@@ -16,7 +23,6 @@ import {
   NgbDropdownModule,
 } from '@ng-bootstrap/ng-bootstrap';
 import { ConfirmationService, Confirmation, ThemeSharedModule } from '@abp/ng.theme.shared';
-import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PageModule } from '@abp/ng.components/page';
 
@@ -36,63 +42,56 @@ import { PageModule } from '@abp/ng.components/page';
   templateUrl: './book.component.html',
   styleUrls: ['./book.component.scss'],
   providers: [ListService, { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class BookComponent implements OnInit {
-  readonly list = inject(ListService);
+export class BookComponent {
+  readonly list = inject(ListService<PagedAndSortedResultRequestDto>);
   private bookService = inject(BookService);
   private fb = inject(FormBuilder);
   private confirmation = inject(ConfirmationService);
 
-  book = { items: [], totalCount: 0 } as PagedResultDto<BookDto>;
+  readonly book = toSignal(this.list.hookToQuery(query => this.bookService.getList(query)), {
+    initialValue: { items: [], totalCount: 0 } as PagedResultDto<BookDto>,
+  });
 
-  form: FormGroup;
+  form!: FormGroup;
 
-  selectedBook = {} as BookDto;
+  readonly selectedBook = signal({} as BookDto);
 
-  authors$: Observable<AuthorLookupDto[]>;
+  readonly authors = toSignal(
+    this.bookService.getAuthorLookup().pipe(map(r => r.items ?? [])),
+    { initialValue: [] as AuthorLookupDto[] },
+  );
 
   bookTypes = bookTypeOptions;
 
-  isModalOpen = false;
-
-  constructor() {
-    const bookService = this.bookService;
-
-    this.authors$ = bookService.getAuthorLookup().pipe(map(r => r.items));
-  }
-
-  ngOnInit() {
-    const bookStreamCreator = query => this.bookService.getList(query);
-
-    this.list.hookToQuery(bookStreamCreator).subscribe((response) => {
-      this.book = response;
-    });
-  }
+  readonly isModalOpen = signal(false);
 
   createBook() {
-    this.selectedBook = {} as BookDto;
+    this.selectedBook.set({} as BookDto);
     this.buildForm();
-    this.isModalOpen = true;
+    this.isModalOpen.set(true);
   }
 
   editBook(id: string) {
-    this.bookService.get(id).subscribe((book) => {
-      this.selectedBook = book;
+    this.bookService.get(id).subscribe(book => {
+      this.selectedBook.set(book);
       this.buildForm();
-      this.isModalOpen = true;
+      this.isModalOpen.set(true);
     });
   }
 
   buildForm() {
+    const selectedBook = this.selectedBook();
     this.form = this.fb.group({
-      authorId: [this.selectedBook.authorId || null, Validators.required],
-      name: [this.selectedBook.name || null, Validators.required],
-      type: [this.selectedBook.type || null, Validators.required],
+      authorId: [selectedBook.authorId || null, Validators.required],
+      name: [selectedBook.name || null, Validators.required],
+      type: [selectedBook.type || null, Validators.required],
       publishDate: [
-        this.selectedBook.publishDate ? new Date(this.selectedBook.publishDate) : null,
+        selectedBook.publishDate ? new Date(selectedBook.publishDate) : null,
         Validators.required,
       ],
-      price: [this.selectedBook.price || null, Validators.required],
+      price: [selectedBook.price || null, Validators.required],
     });
   }
 
@@ -101,12 +100,13 @@ export class BookComponent implements OnInit {
       return;
     }
 
-    const request = this.selectedBook.id
-      ? this.bookService.update(this.selectedBook.id, this.form.value)
+    const selectedBook = this.selectedBook();
+    const request = selectedBook.id
+      ? this.bookService.update(selectedBook.id, this.form.value)
       : this.bookService.create(this.form.value);
 
     request.subscribe(() => {
-      this.isModalOpen = false;
+      this.isModalOpen.set(false);
       this.form.reset();
       this.list.get();
     });
